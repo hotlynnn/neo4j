@@ -20,6 +20,11 @@ OPTIONAL MATCH (n)<-[f: FOLLOWS]-(b: Person)
 OPTIONAL MATCH (n)-[:DIRECTED]->(m: Movie)
 RETURN n.name, b.name, m.title
 
+// character search
+MATCH (n:Person)
+WHERE n.name =~ $regex
+RETURN n.name
+
 // return similar shortest path  between two nodes
 MATCH (m: Movie {title: "The Green Mile"}), (n: Movie {title: "Apollo 13"})
 RETURN allshortestpaths((m)-[*]-(n))

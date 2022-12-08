@@ -6,11 +6,11 @@ RETURN n,p
 MATCH (n: Person {name: 'Oliver Platt'})-[r*2]-(nearest)
 RETURN nearest
 
-// return shortest two paths withOUT duplicates
+// return shortest two paths without duplicates
 MATCH (n: Person {name: 'Oliver Platt'})-[r*2]-(nearest)
 RETURN DISTINCT nearest
 
-// find zeroth secondth shortest path to Oliver
+// find zeroth to secondth shortest path to Oliver
 MATCH (n: Person {name: 'Oliver Platt'})-[*0..2]-(nearest)
 RETURN nearest
 
@@ -19,11 +19,6 @@ MATCH (n: Person)
 OPTIONAL MATCH (n)<-[f: FOLLOWS]-(b: Person)
 OPTIONAL MATCH (n)-[:DIRECTED]->(m: Movie)
 RETURN n.name, b.name, m.title
-
-// character search
-MATCH (n:Person)
-WHERE n.name =~ $regex
-RETURN n.name
 
 // return similar shortest path  between two nodes
 MATCH (m: Movie {title: "The Green Mile"}), (n: Movie {title: "Apollo 13"})
@@ -38,3 +33,32 @@ MATCH (a) WHERE ID(a) = 130
 MATCH (b) WHERE ID(b) = 144
 MATCH (c) WHERE ID(c) = 157
 RETURN shortestpath((a)-[*]-(c))
+
+// character search for Lilly Wachowski
+MATCH (p: Person)
+WHERE p.name =~ "Li[sl]*y.*"
+RETURN p
+
+// search for Keanu Reaves or Kofi Okyere
+MATCH (p: Person)
+WHERE p.name =~ "K(ea|o).*"
+RETURN p
+
+// search for names starting with vowels and order by names
+MATCH (p: Person)
+WHERE p.name =~ '[AEIOU].*'
+RETURN p
+ORDER BY p.name
+
+********************************************************
+// search for names starting with frist five letters of the alphabet(both upper and lower cases) and order by names
+MATCH (p: Person)
+WHERE p.name =~ '([A-E]|[a-e]).*'
+RETURN p
+ORDER BY p.name
+//OR
+MATCH (p: Person)
+WHERE p.name =~ '(?i)[a-e].*'
+RETURN p
+ORDER BY p.name
+*******************************************************

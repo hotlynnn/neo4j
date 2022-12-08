@@ -74,4 +74,9 @@ WHERE SINGLE(age in p.born WHERE age IN [1860, 1961])
 RETURN p.name
 SKIP 2 LIMIT 4
 
-
+// sort in descending after replacing all null values of p.year by -5000
+MATCH (b:Book)
+OPTIONAL MATCH (b) -[p:PublishedBy]-> (c)
+RETURN b.title, p.year
+ORDER BY COALESCE(p.year, -5000) DESC
+LIMIT 5

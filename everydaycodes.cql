@@ -43,7 +43,7 @@ RETURN p
 MATCH (p: Person)
 WHERE p.name =~ "K(ea|o).*"
 RETURN p
-
+-------------------------------------------------------------------
 // search for names starting with vowels and order by names
 MATCH (p: Person)
 WHERE p.name =~ '[AEIOU].*'
@@ -61,4 +61,11 @@ MATCH (p: Person)
 WHERE p.name =~ '(?i)[a-e].*'
 RETURN p
 ORDER BY p.name
-*******************************************************
+--------------------------------------------------------------------
+// predicates, and & or operators
+MATCH (p: Person)
+WHERE ALL(age in p.born WHERE age >= 1960 AND age < 1963)
+AND NONE(age in p.born WHERE age = 1961)
+RETURN p
+
+

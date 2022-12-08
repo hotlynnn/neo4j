@@ -68,4 +68,10 @@ WHERE ALL(age in p.born WHERE age >= 1960 AND age < 1963)
 AND NONE(age in p.born WHERE age = 1961)
 RETURN p
 
+// skip the first two results and print out the subsequent four results
+MATCH (p: Person)
+WHERE SINGLE(age in p.born WHERE age IN [1860, 1961])
+RETURN p.name
+SKIP 2 LIMIT 4
+
 

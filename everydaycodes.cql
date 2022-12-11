@@ -90,4 +90,6 @@ LIMIT 5
 6. std      = STDEV()
 7. createlist = COLLECT()
 
-
+// get years of all persons and place in a list
+MATCH (m: Movie {title: "A Few Good Men"})<--(p)
+RETURN COLLECT(p.born)

@@ -93,3 +93,24 @@ LIMIT 5
 // get years of all persons and place in a list
 MATCH (m: Movie {title: "A Few Good Men"})<--(p)
 RETURN COLLECT(p.born)
+
+// CASE WHEN for different conditions and different outputs - Type 1
+MATCH (b:Book)<-[r:Votes]-(:User)
+OPTIONAL MATCH (b) -[p:PublishedBy]-> (c)
+RETURN
+CASE 
+    WHEN p.year >= 2010 THEN 'Recent'
+    WHEN p.year >= 2005 and p.year < 2010 THEN 'Earlier' 
+    ELSE 'Old' 
+END as category, 
+AVG(r.score)
+
+// CASE WHEN for one condition and different outputs - Type 2
+MATCH (b:Book)<-[r:Votes]-(:User)
+OPTIONAL MATCH (b) -[p:PublishedBy]-> (c)
+RETURN
+CASE COALESCE(p.year % 2, -1)
+    WHEN 0 THEN 'Even'
+    WHEN 1 THEN 'Odd'
+ELSE 'Unknown' END as parity,
+AVG(r.score)

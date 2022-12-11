@@ -80,3 +80,14 @@ OPTIONAL MATCH (b) -[p:PublishedBy]-> (c)
 RETURN b.title, p.year
 ORDER BY COALESCE(p.year, -5000) DESC
 LIMIT 5
+
+// aggreagation
+1. count    = COUNT()
+2. sum      = SUM()
+3. average  = AVG()
+4. maximum  = MAX()
+5. minimum  = MIN()
+6. std      = STDEV()
+7. createlist = COLLECT()
+
+

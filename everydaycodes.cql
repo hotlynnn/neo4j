@@ -114,3 +114,15 @@ CASE COALESCE(p.year % 2, -1)
     WHEN 1 THEN 'Odd'
 ELSE 'Unknown' END as parity,
 AVG(r.score)
+
+// get highest score after setting condition of scores greater than 4 using WITH
+MATCH (b:Book) <-[r:Votes]- (:User)
+WITH b, AVG(r.score) as avgScore
+WHERE avgScore >=4
+RETURN b, avgScore
+ORDER BY avgScore DESC
+
+// Union and Union All
+Union is the same as concatenation in Pandas
+UNION removes duplicates and threfore it iss slower
+UNION ALL keep duplicates

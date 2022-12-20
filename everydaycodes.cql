@@ -131,3 +131,30 @@ UNION ALL keep duplicates
 MERGE (b:User {name: "Jack", surname: "Smith"})
 ON CREATE SET b.place = "London"
 ON MATCH SET b.age = 34
+
+// remove node with multiple labels 
+MERGE (b:User {name: "Jack", surname: "Smith"})
+REMOVE b:Inactive:MustConfirmEmail
+
+// remove properties
+MERGE (b:User {name: "Jack", surname: "Smith"})
+REMOVE b.age
+OR
+MERGE (b:User {name: "Jack", surname: "Smith"})
+SET b.age = NULL
+
+-- REMOVE and  SET are IDEMPOTENT
+
+// delete specific nodes nodes from the database
+-- you must delete existing relationships with other nodes before you can delete the node, else you will get an error
+MATCH (c:User {name: "Jack", surname: "Smith"})
+OPTIONAL MATCH (c)-[r]- ()
+DELETE r, c
+
+// delete the whole database
+-- you must delete existing relationships with other nodes before you can delete the node, else you will get an error
+MATCH (a)
+OPTIONAL MATCH (a)-[r]- ()
+DELETE r, a
+
+

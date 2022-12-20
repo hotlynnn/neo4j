@@ -126,3 +126,8 @@ ORDER BY avgScore DESC
 Union is the same as concatenation in Pandas
 UNION removes duplicates and threfore it iss slower
 UNION ALL keep duplicates
+
+// set properties after creating new node or when the node already exists
+MERGE (b:User {name: "Jack", surname: "Smith"})
+ON CREATE SET b.place = "London"
+ON MATCH SET b.age = 34

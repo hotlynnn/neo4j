@@ -157,4 +157,9 @@ MATCH (a)
 OPTIONAL MATCH (a)-[r]- ()
 DELETE r, a
 
-
+// stages of writing CQL 
+MATCH (a:User {name: "Jack", surname: "Roe"})   --Read
+MERGE (b:User {name: "Jack", surname: "Smith"}) --Write
+WITH a,b                                        --With can be used to replace Return to start Read and write again
+MERGE (a) -[rn:Knows]-> (b)                     --Merge after With
+RETURN a,rn,b                                   --Return

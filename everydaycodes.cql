@@ -163,3 +163,8 @@ MERGE (b:User {name: "Jack", surname: "Smith"}) --Write
 WITH a,b                                        --With can be used to replace Return to start Read and write again
 MERGE (a) -[rn:Knows]-> (b)                     --Merge after With
 RETURN a,rn,b                                   --Return
+
+LOAD CSV WITH HEADERS
+FROM 'https://data.neo4j.com/importing/ratings.csv'
+AS ROW
+RETURN COUNT(ROW)

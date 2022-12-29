@@ -164,7 +164,14 @@ WITH a,b                                        --With can be used to replace Re
 MERGE (a) -[rn:Knows]-> (b)                     --Merge after With
 RETURN a,rn,b                                   --Return
 
+// load csvs with headers
 LOAD CSV WITH HEADERS
 FROM 'https://data.neo4j.com/importing/ratings.csv'
 AS ROW
 RETURN COUNT(ROW)
+
+// // inspect names and types of nodes and their properties within the graph
+CALL apoc.meta.nodeTypeProperties()
+
+// inspect names and types of relationships and their properties within the graph
+CALL apoc.meta.relTypeProperties()

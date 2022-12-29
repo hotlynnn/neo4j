@@ -170,8 +170,9 @@ FROM 'https://data.neo4j.com/importing/ratings.csv'
 AS ROW
 RETURN COUNT(ROW)
 
-// // inspect names and types of nodes and their properties within the graph
-CALL apoc.meta.nodeTypeProperties()
-
 // inspect names and types of relationships and their properties within the graph
 CALL apoc.meta.relTypeProperties()
+
+// inspect names and types of nodes and their properties within the graph
+CALL apoc.meta.nodeTypeProperties()
+YIELD nodeType, propertyName, propertyTypes

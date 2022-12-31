@@ -176,3 +176,9 @@ CALL apoc.meta.relTypeProperties()
 // inspect names and types of nodes and their properties within the graph
 CALL apoc.meta.nodeTypeProperties()
 YIELD nodeType, propertyName, propertyTypes
+
+// import large dataset with more than 1million rows with cypher
+:auto USING PERIODIC COMMIT
+LOAD CSV WITH HEADERS
+FROM 'https://data.neo4j.com/importing/ratings.csv'
+AS row

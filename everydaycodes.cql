@@ -126,3 +126,59 @@ ORDER BY avgScore DESC
 Union is the same as concatenation in Pandas
 UNION removes duplicates and threfore it iss slower
 UNION ALL keep duplicates
+
+// set properties after creating new node or when the node already exists
+MERGE (b:User {name: "Jack", surname: "Smith"})
+ON CREATE SET b.place = "London"
+ON MATCH SET b.age = 34
+
+// remove node with multiple labels 
+MERGE (b:User {name: "Jack", surname: "Smith"})
+REMOVE b:Inactive:MustConfirmEmail
+
+// remove properties
+MERGE (b:User {name: "Jack", surname: "Smith"})
+REMOVE b.age
+OR
+MERGE (b:User {name: "Jack", surname: "Smith"})
+SET b.age = NULL
+
+-- REMOVE and  SET are IDEMPOTENT
+
+// delete specific nodes nodes from the database
+-- you must delete existing relationships with other nodes before you can delete the node, else you will get an error
+MATCH (c:User {name: "Jack", surname: "Smith"})
+OPTIONAL MATCH (c)-[r]- ()
+DELETE r, c
+
+// delete the whole database
+-- you must delete existing relationships with other nodes before you can delete the node, else you will get an error
+MATCH (a)
+OPTIONAL MATCH (a)-[r]- ()
+DELETE r, a
+
+// stages of writing CQL 
+MATCH (a:User {name: "Jack", surname: "Roe"})   --Read
+MERGE (b:User {name: "Jack", surname: "Smith"}) --Write
+WITH a,b                                        --With can be used to replace Return to start Read and write again
+MERGE (a) -[rn:Knows]-> (b)                     --Merge after With
+RETURN a,rn,b                                   --Return
+
+// load csvs with headers
+LOAD CSV WITH HEADERS
+FROM 'https://data.neo4j.com/importing/ratings.csv'
+AS ROW
+RETURN COUNT(ROW)
+
+// inspect names and types of relationships and their properties within the graph
+CALL apoc.meta.relTypeProperties()
+
+// inspect names and types of nodes and their properties within the graph
+CALL apoc.meta.nodeTypeProperties()
+YIELD nodeType, propertyName, propertyTypes
+
+// import large dataset with more than 1million rows with cypher
+:auto USING PERIODIC COMMIT
+LOAD CSV WITH HEADERS
+FROM 'https://data.neo4j.com/importing/ratings.csv'
+AS row
